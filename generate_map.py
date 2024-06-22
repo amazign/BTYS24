@@ -20,25 +20,25 @@ def create_map(bus_locations, output_path):
         ).add_to(bus_map)
 
     # Add a button to load new data
-    bus_map.get_root().html.add_child(folium.Element("""
+    bus_map.get_root().html.add_child(folium.Element(f"""
         <button onclick="updateMap()">Load New Data</button>
         <script>
-            function updateMap() {
-                fetch('/BTYS24/data/new_bus_data.json')
+            function updateMap() {{
+                fetch('https://amazign.github.io/BTYS24/data/new_bus_data.json')
                     .then(response => response.json())
-                    .then(data => {
+                    .then(data => {{
                         // Clear existing markers
                         document.querySelectorAll('.leaflet-marker-icon').forEach(el => el.remove());
                         document.querySelectorAll('.leaflet-popup').forEach(el => el.remove());
 
                         // Add new markers
-                        data.forEach(bus => {
+                        data.forEach(bus => {{
                             const marker = L.marker([bus.latitude, bus.longitude])
                                 .addTo(window.map)
                                 .bindPopup('Bus ID: ' + bus.id);
-                        });
-                    });
-            }
+                        }});
+                    }});
+            }}
         </script>
     """))
 
@@ -46,9 +46,13 @@ def create_map(bus_locations, output_path):
     bus_map.save(output_path)
 
 # Load JSON data from file
-file_path = 'data/bus_location_data.json'
-with open(file_path, 'r') as file:
-    data = json.load(file)
+file_path = '/home/codespace/BTYS24/data/bus_location_data.json'
+try:
+    with open(file_path, 'r') as file:
+        data = json.load(file)
+except FileNotFoundError:
+    print(f"Error: The file {file_path} was not found. Make sure the file exists in the correct directory.")
+    exit(1)
 
 # Extract bus locations
 bus_locations = [
