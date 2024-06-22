@@ -24,7 +24,7 @@ def create_map(bus_locations, output_path):
         <button onclick="updateMap()">Load New Data</button>
         <script>
             function updateMap() {
-                fetch('new_bus_data.json')
+                fetch('/data/new_bus_data.json')
                     .then(response => response.json())
                     .then(data => {
                         // Clear existing markers
